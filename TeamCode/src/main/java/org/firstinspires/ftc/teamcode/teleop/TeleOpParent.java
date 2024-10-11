@@ -35,6 +35,8 @@ public class TeleOpParent extends LinearOpMode {
                 Wojcik.claw.close();
             }
 
+            Wojcik.lift.setPosition(gamepad2.left_stick_y);
+
             double driveTurn = Math.pow(gamepad1.right_stick_x, 3); //change to minus if broken
             double driveY = Math.pow(gamepad1.left_stick_x, 3);
             double driveX = Math.pow(gamepad1.left_stick_y, 3);
