@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.component.Claw;
 import org.firstinspires.ftc.teamcode.component.Lift;
+import org.firstinspires.ftc.teamcode.component.Pivot;
 
 /**
 * This file represents your robot; here is where you'll put all of your components together to form
@@ -16,6 +17,7 @@ public class Wojcik {
 
     public static Claw claw;
     public static Lift lift;
+    public static Pivot pivot;
 
     public static DcMotor frontLeft;
     public static DcMotor frontRight;
@@ -29,6 +31,9 @@ public class Wojcik {
 
         lift = new Lift();
         lift.init(hwMap);
+
+        pivot = new Pivot();
+        pivot.init(hwMap);
 
         frontLeft = hwMap.get(DcMotor.class, "leftFront");
         frontRight = hwMap.get(DcMotor.class, "rightFront");
