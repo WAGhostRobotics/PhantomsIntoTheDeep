@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.core.Wojcik;
 import org.firstinspires.ftc.teamcode.library.DriveStyle;
+import org.firstinspires.ftc.teamcode.library.DriverOrientedControl;
 import org.firstinspires.ftc.teamcode.library.MecanumDrive;
 
 @TeleOp(name = "TeleOpBoomer") // the name is what shows up on your phone/driver hub
@@ -12,7 +13,6 @@ public class TeleOpParent extends LinearOpMode {
 
 //    DriverOrientedControl drive;
     public double movementPwr = 1;
-    public double turningMultiplier = 1;
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMTANK;
 
     @Override
@@ -23,6 +23,8 @@ public class TeleOpParent extends LinearOpMode {
         waitForStart();
 
         MecanumDrive drive = new MecanumDrive(hardwareMap);
+//        DriverOrientedControl drive = new DriverOrientedControl()
+        //pass args and motors
 
         while (opModeIsActive()) {
 
@@ -47,6 +49,7 @@ public class TeleOpParent extends LinearOpMode {
             double driveY = Math.pow(gamepad1.left_stick_x, 3);
             double driveX = Math.pow(gamepad1.left_stick_y, 3);
             drive.drive(Math.hypot(driveX, driveY), Math.toDegrees(Math.atan2(driveY, driveX)), driveTurn, movementPwr);
+            //Use driverOrientedControl.drive passing gamepad1 and movementPwr as args
 
             telemetry.addData("Pos L", Wojcik.lift.getPosition()[0]);
             telemetry.addData("Pos R", Wojcik.lift.getPosition()[1]);
