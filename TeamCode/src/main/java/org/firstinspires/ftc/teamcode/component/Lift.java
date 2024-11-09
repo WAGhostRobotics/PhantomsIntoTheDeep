@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.component;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Lift {
 
@@ -14,19 +15,19 @@ public class Lift {
 
         leftSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        leftSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        leftSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void setPower(double power){
-        if (power<0 && getPosition()[1]>500) {
-            rightSlides.setPower(-power);
-            leftSlides.setPower(power);
+        if (power<0 && getPosition()[0]>400) {
+            rightSlides.setPower(power);
+            leftSlides.setPower(-power);
         }
-        else if (power>0 && getPosition()[1]<7300) {
-            rightSlides.setPower(-power);
-            leftSlides.setPower(power);
+        else if (power>0 && getPosition()[0]<7300) {
+            rightSlides.setPower(power);
+            leftSlides.setPower(-power);
         }
         else {
             rightSlides.setPower(0);
