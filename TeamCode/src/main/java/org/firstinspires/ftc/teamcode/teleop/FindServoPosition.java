@@ -12,17 +12,13 @@ public class FindServoPosition extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Servo servo = hardwareMap.get(Servo.class, "insert servo name here");
 
-        double position = 0; // initial position of the servo
+        double position; // initial position of the servo
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            if (gamepad1.a) {
-                position += 0.0001;
-            } else if (gamepad1.b) {
-                position -= 0.0001;
-            }
+            position = gamepad1.left_stick_x;
 
             servo.setPosition(position); // move servo to new position
 

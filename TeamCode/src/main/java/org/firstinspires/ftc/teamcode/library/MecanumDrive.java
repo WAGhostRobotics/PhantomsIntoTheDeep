@@ -10,7 +10,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 
-public class MecanumDrive implements Drivetrain {
+public class MecanumDrive {
+    // remove drivetrain.java if code works, otherwise, restore implementation and @override
 
     private DcMotorEx frontLeft;
     private DcMotorEx frontRight;
@@ -52,7 +53,7 @@ public class MecanumDrive implements Drivetrain {
 
     }
 
-    @Override
+//    @Override
     public void driveMax(double magnitude, double theta, double driveTurn, double movementPower){
 
         driveCommon(magnitude, theta, driveTurn);
@@ -72,16 +73,9 @@ public class MecanumDrive implements Drivetrain {
 
         telemetry = "" + frontLeftPower + " \n" + frontRightPower + " \n" + backLeftPower + " \n" + backRightPower;
 
-        // 1 -1 1 -1
-        // -1 -1 1 1
-
-        // 1 -1 -1 1
-
     }
 
-
-
-    @Override
+//    @Override
     public void drive(double magnitude, double theta, double driveTurn, double movementPower){
 
         driveCommon(magnitude, theta, driveTurn);
@@ -103,7 +97,7 @@ public class MecanumDrive implements Drivetrain {
         telemetry = "" + frontLeftPower + " \n" + frontRightPower + " \n" + backLeftPower + " \n" + backRightPower;
     }
 
-    @Override
+//    @Override
     public void driveMax(double magnitude, double theta, double driveTurn, double movementPower, double voltage){
 
         driveCommon(magnitude, theta, driveTurn);
@@ -133,7 +127,7 @@ public class MecanumDrive implements Drivetrain {
     }
 
 
-    @Override
+//    @Override
     public void drive(double magnitude, double theta, double driveTurn, double movementPower, double voltage){
 
         driveCommon(magnitude, theta, driveTurn);
@@ -162,7 +156,7 @@ public class MecanumDrive implements Drivetrain {
     }
 
 
-    @Override
+//    @Override
     public String getTelemetry(){
         return telemetry;
     }

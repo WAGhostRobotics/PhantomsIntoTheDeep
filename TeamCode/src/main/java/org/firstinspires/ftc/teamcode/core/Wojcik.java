@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.component.Claw;
+import org.firstinspires.ftc.teamcode.component.Lift;
+import org.firstinspires.ftc.teamcode.component.Pivot;
 
 /**
 * This file represents your robot; here is where you'll put all of your components together to form
@@ -13,6 +16,8 @@ import org.firstinspires.ftc.teamcode.component.Claw;
 public class Wojcik {
 
     public static Claw claw;
+    public static Lift lift;
+    public static Pivot pivot;
 
     public static DcMotor frontLeft;
     public static DcMotor frontRight;
@@ -24,15 +29,21 @@ public class Wojcik {
         claw = new Claw();
         claw.init(hwMap);
 
-        frontLeft = hwMap.get(DcMotor.class, "lf");
-        frontRight = hwMap.get(DcMotor.class, "rf");
-        backLeft = hwMap.get(DcMotor.class, "lr");
-        backRight = hwMap.get(DcMotor.class, "rr");
+        lift = new Lift();
+        lift.init(hwMap);
 
-//            frontLeft.setInverted(true);
-//            frontRight.setInverted(true);
-//            backLeft.setInverted(true);
-//            backRight.setInverted(true);
+        pivot = new Pivot();
+        pivot.init(hwMap);
+
+        frontLeft = hwMap.get(DcMotor.class, "leftFront");
+        frontRight = hwMap.get(DcMotor.class, "rightFront");
+        backLeft = hwMap.get(DcMotor.class, "leftBack");
+        backRight = hwMap.get(DcMotor.class, "rightBack");
+
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
