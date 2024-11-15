@@ -45,12 +45,12 @@ public class TeleOpParent extends LinearOpMode {
 
             Wojcik.lift.setPower(gamepad2.right_trigger-gamepad2.left_trigger);
 
-            if(gamepad2.right_stick_y>-0.1 && gamepad2.right_stick_y<0.1) {
+//            if(gamepad2.right_stick_y>-0.1 && gamepad2.right_stick_y<0.1) {
 //                Wojcik.pivot.kStatic();
-            }
-            else{
+//            }
+//            else{
                 Wojcik.pivot.setPower(gamepad2.right_stick_y*0.5);
-            }
+//            }
 
             double driveTurn = Math.pow(gamepad1.right_stick_x, 3); //change to minus if broken
             double driveY = Math.pow(gamepad1.left_stick_x, 3);
