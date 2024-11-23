@@ -21,7 +21,7 @@ public class TeleOpParent extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
-        Wojcik.init(hardwareMap);
+        Wojcik.init(hardwareMap, true);
 
         waitForStart();
 

@@ -26,6 +26,8 @@ public class AutoParent extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        Wojcik.init(hardwareMap, false);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         xMult = bucket ? 2 : -1;
@@ -36,7 +38,7 @@ public class AutoParent extends LinearOpMode {
 
         switch(pos){
             case 3: //Blue bucket
-                startPose = new Pose2d(24, 60, Math.toRadians(270));
+                startPose = new Pose2d(36, 60, Math.toRadians(270));
 //                 forward = drive.trajectoryBuilder(new Pose2d(24, 60, Math.toRadians(270)))
 //                        .splineTo(new Vector2d(48, 36), Math.toRadians(270))
 //                        .build();
@@ -47,28 +49,30 @@ public class AutoParent extends LinearOpMode {
                         .lineToLinearHeading(new Pose2d(48, 60, 0))
                         .build();
                 park = drive.trajectoryBuilder(drop.end())
+                        .back(5)
                         .splineTo(new Vector2d(0, 36), Math.toRadians(270))
                         .splineTo(new Vector2d(-48, 60), Math.PI)
                         .build();
                 break;
             case 1: //Red bucket
-                startPose = new Pose2d(-24, -60, Math.toRadians(270));
+                startPose = new Pose2d(-36, -60, Math.toRadians(90));
 //                 forward = drive.trajectoryBuilder(new Pose2d(24, -60, Math.toRadians(90)))
 //                        .splineTo(new Vector2d(48, -36), Math.toRadians(-270))
 //                        .build();
 //                 basket = drive.trajectoryBuilder(forward.end())
 //                        .lineToLinearHeading(new Pose2d(48, -54, Math.toRadians(-45)))
 //                        .build();
-                drop =  drive.trajectoryBuilder(new Pose2d(-24, -60, Math.toRadians(270)))
+                drop =  drive.trajectoryBuilder(new Pose2d(-24, -60, Math.toRadians(90)))
                         .lineToLinearHeading(new Pose2d(-48, -60, Math.PI))
                         .build();
                 park = drive.trajectoryBuilder(drop.end())
-                        .splineTo(new Vector2d(0, -36), Math.toRadians(270))
+                        .back(5)
+                        .splineTo(new Vector2d(0, -36), Math.toRadians(90))
                         .splineTo(new Vector2d(48, -60), 0)
                         .build();
                 break;
             case 0: //Blue far
-                startPose = new Pose2d(-12, 60, Math.toRadians(270));
+                startPose = new Pose2d(-36, 60, Math.toRadians(270));
 //                 forward = drive.trajectoryBuilder(new Pose2d(-12, 60, Math.toRadians(270)))
 //                        .splineTo(new Vector2d(48, 36), Math.toRadians(270))
 //                        .build();
@@ -80,38 +84,43 @@ public class AutoParent extends LinearOpMode {
                         .splineTo(new Vector2d(48, 60), 0)
                         .build();
                 park = drive.trajectoryBuilder(drop.end())
+                        .back(5)
                         .splineTo(new Vector2d(0, 36), Math.toRadians(270))
-                        .splineTo(new Vector2d(-48, 60), Math.toRadians(270))
+                        .splineTo(new Vector2d(-54, 54), Math.toRadians(270))
                         .build();
                 break;
             case -2://Red far
-                startPose = new Pose2d(12, -60, Math.toRadians(270));
+                startPose = new Pose2d(36, -60, Math.toRadians(90));
 //                 forward = drive.trajectoryBuilder(new Pose2d(-12, -60, Math.toRadians(90)))
 //                        .splineTo(new Vector2d(48, -36), Math.toRadians(-270))
 //                        .build();
 //                 basket = drive.trajectoryBuilder(forward.end())
 //                        .lineToLinearHeading(new Pose2d(48, -54, Math.toRadians(-45)))
 //                        .build();
-                drop =  drive.trajectoryBuilder(new Pose2d(12, -60, Math.toRadians(270)))
-                        .splineTo(new Vector2d(0, -36), Math.toRadians(270))
+                drop =  drive.trajectoryBuilder(new Pose2d(12, -60, Math.toRadians(90)))
+                        .splineTo(new Vector2d(0, -36), Math.toRadians(90))
                         .splineTo(new Vector2d(-48, -60), Math.PI)
                         .build();
                 park = drive.trajectoryBuilder(drop.end())
-                        .splineTo(new Vector2d(0, -36), Math.toRadians(270))
+                        .back(5)
+                        .splineTo(new Vector2d(0, -36), Math.toRadians(90))
                         .splineTo(new Vector2d(48, -60), 0)
                         .build();
                 break;
         }
 
+//        startPose = new Pose2d(12, -60, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
-
-        Wojcik.init(hardwareMap);
+//        drop = drive.trajectoryBuilder(startPose)
+//                .splineTo(new Vector2d(0, -36), Math.toRadians(270))
+//                .splineTo(new Vector2d(48, -60), 0)
+//                .build();
         waitForStart();
-        Wojcik.claw.close();
+        Wojcik.claw.open();
         if(isStopRequested()) return;
 
         drive.followTrajectory(drop);
-        Wojcik.claw.open();
+        Wojcik.claw.close();
         drive.followTrajectory(park);
     }
 }

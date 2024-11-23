@@ -12,7 +12,7 @@ public class TestOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException{
 
-        Wojcik.init(hardwareMap);
+        Wojcik.init(hardwareMap, true);
         waitForStart();
         while (opModeIsActive()) {
             Wojcik.pivot.setPower(gamepad2.right_stick_y*0.5);
