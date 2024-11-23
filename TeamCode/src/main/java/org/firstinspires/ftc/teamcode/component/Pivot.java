@@ -8,12 +8,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Pivot {
 
-    DcMotor leftPivot;
-    DcMotor rightPivot;
+    private DcMotor leftPivot;
+    private DcMotor rightPivot;
 
-    Servo lock;
+    private Servo lock;
 
-    boolean disengage = true;
+    private int limit = 750;
+
+    public boolean disengage = true;
 
     public void init(HardwareMap hardwareMap){
         leftPivot = hardwareMap.get(DcMotor.class, "leftPivot");
@@ -29,25 +31,26 @@ public class Pivot {
     }
 
     public void setPower(double power){
-        if(Math.abs(power)>0.1) {
+        if((power>0 || this.getPosition()[0]<limit) && Math.abs(power)>0.1) {
             this.unlock();
-            if(power>0 || disengage) {
-//                if (power<0) {
-//                    power*=0.1;
-//                }
+            try{
+                Thread.sleep(100);
+            }
+            catch(InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
+
+            if(power>0) {
                 rightPivot.setPower(power);
                 leftPivot.setPower(-power);
             }
+            else if (this.getPosition()[0]>300){
+                rightPivot.setPower(0);
+                leftPivot.setPower(0);
+            }
             else{
-                rightPivot.setPower(-power);
-                leftPivot.setPower(power);
-
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                disengage = true;
+                rightPivot.setPower(power);
+                leftPivot.setPower(-power);
             }
         }
         else{
@@ -63,11 +66,11 @@ public class Pivot {
     }
 
     public void lock(){
-        lock.setPosition(1);//TODO: TUNE
+        lock.setPosition(0.28);
     }
 
     public void unlock(){
-        lock.setPosition(0.18);//TODO: TUNE
+        lock.setPosition(0.2);
     }
 
 //    public double kStatic() {

@@ -15,6 +15,9 @@ public class TeleOpParent extends LinearOpMode {
     public double movementPwr = 1;
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
 
+    boolean lastClawChange = false;
+    boolean clawOpen = true;
+
     @Override
     public void runOpMode() throws InterruptedException{
 
@@ -23,39 +26,64 @@ public class TeleOpParent extends LinearOpMode {
         waitForStart();
 
         MecanumDrive drive = new MecanumDrive(hardwareMap);
+
+        Wojcik.claw.open();
+
 //        DriverOrientedControl drive = new DriverOrientedControl()
         //pass args and motors
 
         while (opModeIsActive()) {
 
-            if(gamepad1.b){
-                Wojcik.claw.open();
-            }
-            if(gamepad1.a){
-                Wojcik.claw.close();
+//            if(gamepad2.b){
+//                Wojcik.claw.open();
+//            }
+//            if(gamepad2.a){
+//                Wojcik.claw.close();
+//            }
+
+            if(gamepad2.a && !lastClawChange){
+                if(clawOpen){
+                    Wojcik.claw.close();
+                }
+                else if(!clawOpen){
+                    Wojcik.claw.open();
+                }
+                clawOpen = !clawOpen;
             }
 
-            if(gamepad1.dpad_left){
+            lastClawChange = gamepad2.a;
+
+            if(gamepad1.left_trigger>0.1){
+                movementPwr = 0.33;
+            }
+            else{
+                movementPwr = 1;
+            }
+            if(gamepad2.dpad_left){
                 Wojcik.claw.spinLeft();
             }
 
-            if(gamepad1.dpad_right){
+            if(gamepad2.dpad_right){
                 Wojcik.claw.spinRight();
             }
 
-            Wojcik.lift.setPower(gamepad2.right_trigger-gamepad2.left_trigger);
+            if(gamepad2.y){
+                Wojcik.lift.stabilizeAscension();
+            }
 
-//            if(gamepad2.right_stick_y>-0.1 && gamepad2.right_stick_y<0.1) {
-//                Wojcik.pivot.kStatic();
-//            }
-//            else{
-                Wojcik.pivot.setPower(gamepad2.right_stick_y*0.5);
-//            }
+            if(gamepad2.right_trigger-gamepad2.left_trigger<0 || Wojcik.checkExtension()) {
+                Wojcik.lift.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+            }
+            else{
+                Wojcik.lift.setPower(0);
+            }
+
+            Wojcik.pivot.setPower(gamepad2.right_stick_y*-0.5);
 
             double driveTurn = Math.pow(gamepad1.right_stick_x, 3); //change to minus if broken
             double driveY = Math.pow(gamepad1.left_stick_x, 3);
             double driveX = Math.pow(gamepad1.left_stick_y, 3);
-            drive.drive(Math.hypot(driveX, driveY), Math.toDegrees(Math.atan2(driveY, driveX)), driveTurn, movementPwr*0.1);
+            drive.drive(Math.hypot(driveX, driveY), Math.toDegrees(Math.atan2(driveY, driveX)), driveTurn, movementPwr);
             //Use driverOrientedControl.drive passing gamepad1 and movementPwr as args
 
             telemetry.addData("Pos L", Wojcik.lift.getPosition()[0]);
@@ -64,9 +92,9 @@ public class TeleOpParent extends LinearOpMode {
             telemetry.addData("Pos Piv L", Wojcik.pivot.getPosition()[0]);
             telemetry.addData("Pos Piv R", Wojcik.pivot.getPosition()[1]);
 
-            telemetry.addData("DOF Pos", Wojcik.claw.getDOFPosition());
+//            telemetry.addData("Piv Disengage", gamepad2.right_stick_y*0.5>0 || Wojcik.pivot.getPosition()[0]<715);
 
-            telemetry.addData("RSY", gamepad2.right_stick_y);
+            telemetry.addData("PivMult", Math.min((900-Wojcik.pivot.getPosition()[0])/400,1));
             telemetry.update();
         }
     }
