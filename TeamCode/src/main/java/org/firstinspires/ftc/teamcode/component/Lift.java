@@ -9,6 +9,8 @@ public class Lift {
     DcMotor leftSlides;
     DcMotor rightSlides;
 
+    boolean stabilize = false;
+
     public void init(HardwareMap hardwareMap){
         leftSlides = hardwareMap.get(DcMotor.class, "leftUp");
         rightSlides = hardwareMap.get(DcMotor.class, "rightUp");
@@ -21,20 +23,26 @@ public class Lift {
     }
 
     public void setPower(double power){
-        if (power<0 && getPosition()[0]>400) {
-            rightSlides.setPower(power);
-            leftSlides.setPower(-power);
+        if(!stabilize) {
+            if (power < 0 && getPosition()[0] > 300) {
+                rightSlides.setPower(power);
+                leftSlides.setPower(-power);
+            } else if (power > 0 && getPosition()[0] < 7000) {
+                rightSlides.setPower(power);
+                leftSlides.setPower(-power);
+            } else {
+                rightSlides.setPower(0);
+                leftSlides.setPower(0);
+            }
         }
-        else if (power>0 && getPosition()[0]<7300) {
-            rightSlides.setPower(power);
-            leftSlides.setPower(-power);
+        else{
+            rightSlides.setPower(-0.3);
+            leftSlides.setPower(0.3);
         }
-        else {
-            rightSlides.setPower(0);
-            leftSlides.setPower(0);
-        }
+    }
 
-
+    public void stabilizeAscension(){
+        stabilize = true;
     }
 
     public double[] getPosition(){

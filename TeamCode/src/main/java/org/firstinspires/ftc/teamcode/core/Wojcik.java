@@ -24,7 +24,7 @@ public class Wojcik {
     public static DcMotor backLeft;
     public static DcMotor backRight;
 
-    public static void init(HardwareMap hwMap) {
+    public static void init(HardwareMap hwMap, boolean teleOp) {
 
         claw = new Claw();
         claw.init(hwMap);
@@ -35,20 +35,41 @@ public class Wojcik {
         pivot = new Pivot();
         pivot.init(hwMap);
 
-        frontLeft = hwMap.get(DcMotor.class, "leftFront");
-        frontRight = hwMap.get(DcMotor.class, "rightFront");
-        backLeft = hwMap.get(DcMotor.class, "leftBack");
-        backRight = hwMap.get(DcMotor.class, "rightBack");
+        if(teleOp) {
+            frontLeft = hwMap.get(DcMotor.class, "leftFront");
+            frontRight = hwMap.get(DcMotor.class, "rightFront");
+            backLeft = hwMap.get(DcMotor.class, "leftBack");
+            backRight = hwMap.get(DcMotor.class, "rightBack");
 
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+
+    }
+
+    public static boolean checkExtension(){
+        double liftTheta = -0.003*pivot.getPosition()[0]+2.09;
+        double slideExtention = 0.004*lift.getPosition()[0] + 14.692;
+
+        double adjacent = Math.abs(slideExtention*Math.cos(liftTheta));
+
+        if(pivot.getPosition()[0]>173){
+            adjacent += 5.5;
+        }
+        else{
+            adjacent += 9;
+        }
+
+        double horizontalLength = Math.max(adjacent, 14);
+
+        return horizontalLength<41;
 
     }
 }
