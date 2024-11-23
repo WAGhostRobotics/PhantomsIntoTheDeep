@@ -66,7 +66,7 @@ public class Pivot {
     }
 
     public void lock(){
-        lock.setPosition(0.28);
+        lock.setPosition(0.4);
     }
 
     public void unlock(){
@@ -93,7 +93,5 @@ public class Pivot {
 //        }
 //        return pwr;
 //    }
-
-
 
 }

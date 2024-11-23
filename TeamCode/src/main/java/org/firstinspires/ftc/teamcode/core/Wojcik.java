@@ -51,7 +51,6 @@ public class Wojcik {
             backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
-
     }
 
     public static boolean checkExtension(){
@@ -69,7 +68,7 @@ public class Wojcik {
 
         double horizontalLength = Math.max(adjacent, 14);
 
-        return horizontalLength<41;
+        return horizontalLength<39;
 
     }
 }

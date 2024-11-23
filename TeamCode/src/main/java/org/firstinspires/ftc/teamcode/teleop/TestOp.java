@@ -14,8 +14,8 @@ public class TestOp extends LinearOpMode {
 
         Wojcik.init(hardwareMap, true);
         waitForStart();
+        Wojcik.claw.close();
         while (opModeIsActive()) {
-            Wojcik.pivot.setPower(gamepad2.right_stick_y*0.5);
         }
     }
 }

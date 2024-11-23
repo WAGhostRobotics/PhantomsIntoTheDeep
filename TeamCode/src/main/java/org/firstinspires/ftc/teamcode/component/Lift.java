@@ -45,6 +45,10 @@ public class Lift {
         stabilize = true;
     }
 
+    public void stopAscension(){
+        stabilize = false;
+    }
+
     public double[] getPosition(){
         return new double[]{leftSlides.getCurrentPosition(), rightSlides.getCurrentPosition()};
     }

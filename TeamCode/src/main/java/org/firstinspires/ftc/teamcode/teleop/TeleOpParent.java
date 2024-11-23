@@ -23,23 +23,20 @@ public class TeleOpParent extends LinearOpMode {
 
         Wojcik.init(hardwareMap, true);
 
+        Wojcik.claw.open();
+
+        Wojcik.pivot.lock();
+
         waitForStart();
 
         MecanumDrive drive = new MecanumDrive(hardwareMap);
 
-        Wojcik.claw.open();
+        telemetry.addData("Pos L", Wojcik.lift.getPosition()[0]);
 
 //        DriverOrientedControl drive = new DriverOrientedControl()
         //pass args and motors
 
         while (opModeIsActive()) {
-
-//            if(gamepad2.b){
-//                Wojcik.claw.open();
-//            }
-//            if(gamepad2.a){
-//                Wojcik.claw.close();
-//            }
 
             if(gamepad2.a && !lastClawChange){
                 if(clawOpen){
@@ -54,7 +51,7 @@ public class TeleOpParent extends LinearOpMode {
             lastClawChange = gamepad2.a;
 
             if(gamepad1.left_trigger>0.1){
-                movementPwr = 0.33;
+                movementPwr = 0.25;
             }
             else{
                 movementPwr = 1;
@@ -70,12 +67,15 @@ public class TeleOpParent extends LinearOpMode {
             if(gamepad2.y){
                 Wojcik.lift.stabilizeAscension();
             }
+            if(gamepad2.x){
+                Wojcik.lift.stopAscension();
+            }
 
             if(gamepad2.right_trigger-gamepad2.left_trigger<0 || Wojcik.checkExtension()) {
                 Wojcik.lift.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
             }
             else{
-                Wojcik.lift.setPower(0);
+                Wojcik.lift.setPower(-1);
             }
 
             Wojcik.pivot.setPower(gamepad2.right_stick_y*-0.5);
