@@ -5,7 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.core.Wojcik;
+import org.firstinspires.ftc.teamcode.core.Professor;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 public class AutoParent extends LinearOpMode {
@@ -27,7 +27,7 @@ public class AutoParent extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        Wojcik.init(hardwareMap, false);
+        Professor.init(hardwareMap, false);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         xMult = bucket ? 2 : -1;
@@ -115,9 +115,8 @@ public class AutoParent extends LinearOpMode {
 //                .splineTo(new Vector2d(0, -36), Math.toRadians(270))
 //                .splineTo(new Vector2d(48, -60), 0)
 //                .build();
-        Wojcik.pivot.lock();
         waitForStart();
-        Wojcik.claw.open();
+        Professor.outclaw.close();
         if(isStopRequested()) return;
 
         drive.followTrajectory(drop);
@@ -127,7 +126,7 @@ public class AutoParent extends LinearOpMode {
         catch(InterruptedException e){
             Thread.currentThread().interrupt();
         }
-        Wojcik.claw.close();
+        Professor.outclaw.open();
         try{
             Thread.sleep(250);
         }

@@ -4,20 +4,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.component.Claw;
-import org.firstinspires.ftc.teamcode.component.Lift;
-import org.firstinspires.ftc.teamcode.component.Pivot;
+import org.firstinspires.ftc.teamcode.component.IntakeClaw;
+import org.firstinspires.ftc.teamcode.component.IntakeLift;
+import org.firstinspires.ftc.teamcode.component.OutputClaw;
+import org.firstinspires.ftc.teamcode.component.OutputLift;
 
 /**
 * This file represents your robot; here is where you'll put all of your components together to form
 * one object that can be programmed to perform various tasks in TeleOpMode.
 * */
 
-public class Wojcik {
+public class Professor {
 
-    public static Claw claw;
-    public static Lift lift;
-    public static Pivot pivot;
+    public static IntakeClaw inclaw;
+    public static IntakeLift inlift;
+    public static OutputClaw outclaw;
+    public static OutputLift outlift;
 
     public static DcMotor frontLeft;
     public static DcMotor frontRight;
@@ -26,14 +28,17 @@ public class Wojcik {
 
     public static void init(HardwareMap hwMap, boolean teleOp) {
 
-        claw = new Claw();
-        claw.init(hwMap);
+        inclaw = new IntakeClaw();
+        inclaw.init(hwMap);
 
-        lift = new Lift();
-        lift.init(hwMap);
+        inlift = new IntakeLift();
+        inlift.init(hwMap);
 
-        pivot = new Pivot();
-        pivot.init(hwMap);
+        outclaw = new OutputClaw();
+        outclaw.init(hwMap);
+
+        outlift = new OutputLift();
+        outlift.init(hwMap);
 
         if(teleOp) {
             frontLeft = hwMap.get(DcMotor.class, "leftFront");
@@ -51,24 +56,5 @@ public class Wojcik {
             backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
-    }
-
-    public static boolean checkExtension(){
-        double liftTheta = -0.003*pivot.getPosition()[0]+2.09;
-        double slideExtention = 0.004*lift.getPosition()[0] + 14.692;
-
-        double adjacent = Math.abs(slideExtention*Math.cos(liftTheta));
-
-        if(pivot.getPosition()[0]>173){
-            adjacent += 5.5;
-        }
-        else{
-            adjacent += 9;
-        }
-
-        double horizontalLength = Math.max(adjacent, 14);
-
-        return horizontalLength<39;
-
     }
 }
