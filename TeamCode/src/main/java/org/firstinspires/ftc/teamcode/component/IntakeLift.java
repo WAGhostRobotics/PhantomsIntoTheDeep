@@ -6,33 +6,37 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeLift {
 
-    DcMotor leftSlides;
-    DcMotor rightSlides;
+    Servo slide;
 
     public void init(HardwareMap hardwareMap){
-        leftSlides = hardwareMap.get(DcMotor.class, "leftHoriz");
-        rightSlides = hardwareMap.get(DcMotor.class, "rightHoriz");
+        slide = hardwareMap.get(Servo.class, "horiz");
 
-        leftSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //
 //        leftSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        rightSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void setPower(double power){
-        if ((power < 0 && getPosition()[0] > 300)|| (power > 0 && getPosition()[0] < 7000)) {
-            rightSlides.setPower(power);
-            leftSlides.setPower(-power);
-        }
-        else {
-            rightSlides.setPower(0);
-            leftSlides.setPower(0);
-        }
-    }
+//    public void setPower(double power){
+//        if ((power < 0 && getPosition()[0] > 300)|| (power > 0 && getPosition()[0] < 7000)) {
+//            rightSlides.setPower(power);
+//            leftSlides.setPower(-power);
+//        }
+//        else {
+//            rightSlides.setPower(0);
+//            leftSlides.setPower(0);
+//        }
+//    }
+//
+//    public double[] getPosition(){
+//        return new double[]{leftSlides.getCurrentPosition(), rightSlides.getCurrentPosition()};
+//    }
 
-    public double[] getPosition(){
-        return new double[]{leftSlides.getCurrentPosition(), rightSlides.getCurrentPosition()};
+    public void setPosition(double targetPos){
+        slide.setPosition(targetPos);
     }
-
+    public double getPosition(){
+        return slide.getPosition();
+    }
 }

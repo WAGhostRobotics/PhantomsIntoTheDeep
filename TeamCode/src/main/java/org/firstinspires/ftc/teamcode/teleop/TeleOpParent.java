@@ -14,8 +14,11 @@ public class TeleOpParent extends LinearOpMode {
     public double movementPwr = 1;
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
 
-    boolean lastClawChange = false;
-    boolean clawOpen = true;
+    boolean lastClawChangeIn = false;
+    boolean lastClawChangeOut = false;
+    boolean inClawOpen = true;
+    boolean outClawOpen = true;
+    boolean lowering;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -23,6 +26,8 @@ public class TeleOpParent extends LinearOpMode {
         Professor.init(hardwareMap, true);
 
         Professor.inclaw.open();
+        Professor.outclaw.close();
+        Professor.outclaw.dofReady();
 
         waitForStart();
 
@@ -33,17 +38,33 @@ public class TeleOpParent extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if(gamepad2.a && !lastClawChange){
-                if(clawOpen){
+            if(gamepad2.a && !lastClawChangeIn){
+                if(inClawOpen){
                     Professor.inclaw.close();
                 }
-                else if(!clawOpen){
+                else if(!inClawOpen){
                     Professor.inclaw.open();
                 }
-                clawOpen = !clawOpen;
+                inClawOpen = !inClawOpen;
             }
 
-            lastClawChange = gamepad2.a;
+            lastClawChangeIn = gamepad2.a;
+
+            if(gamepad2.y && !lastClawChangeOut){
+                if(outClawOpen){
+                    Professor.outclaw.close();
+                }
+                else if(!outClawOpen){
+                    Professor.outclaw.open();
+                }
+                outClawOpen = !outClawOpen;
+            }
+
+            lastClawChangeOut = gamepad2.y;
+
+            if (gamepad2.x){
+                passSample();
+            }
 
             if(gamepad1.left_trigger>0.1){
                 movementPwr = 0.25;
@@ -51,15 +72,38 @@ public class TeleOpParent extends LinearOpMode {
             else{
                 movementPwr = 1;
             }
-            if(gamepad2.dpad_left){
-                Professor.inclaw.spinLeft();
-            }
-
             if(gamepad2.dpad_right){
-                Professor.inclaw.spinRight();
+                Professor.inlift.setPosition(0);
             }
 
-            Professor.inlift.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+            if(gamepad2.dpad_left){
+                Professor.inlift.setPosition(1);
+            }
+
+//            if(gamepad2.dpad_up || lowering) {
+//                Professor.outlift.setPosition(0);
+//                lowering = !Professor.outlift.atTarget();
+//            }
+//            else {
+//                Professor.outlift.setPower(gamepad2.left_stick_y);
+//            }
+
+            if(gamepad2.x){
+                Professor.outclaw.armUp();
+            }
+            else if(gamepad2.b){
+                Professor.outclaw.armDown();
+            }
+
+            if(gamepad2.left_bumper){
+                Professor.outclaw.turnDown();
+            }
+
+            if(gamepad2.right_bumper){
+                Professor.outclaw.turnUp();
+            }
+
+
 
             double driveTurn = Math.pow(gamepad1.right_stick_x, 3); //change to minus if broken
             double driveY = Math.pow(gamepad1.left_stick_x, 3);
@@ -67,10 +111,16 @@ public class TeleOpParent extends LinearOpMode {
             drive.drive(Math.hypot(driveX, driveY), Math.toDegrees(Math.atan2(driveY, driveX)), driveTurn, movementPwr);
             //Use driverOrientedControl.drive passing gamepad1 and movementPwr as args
 
-            telemetry.addData("Pos L", Professor.inlift.getPosition()[0]);
-            telemetry.addData("Pos R", Professor.inlift.getPosition()[1]);
+            telemetry.addData("Pos L", Professor.inlift.getPosition());
 
             telemetry.update();
         }
+    }
+    public void passSample(){
+        Professor.inlift.setPosition(1);
+        Professor.inclaw.setDOFPosition(1);
+        Professor.outlift.setPosition(0);
+        lowering = true;
+
     }
 }

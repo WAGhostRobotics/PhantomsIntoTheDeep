@@ -30,6 +30,10 @@ public class IntakeClaw {
 
     public void spinRight(){degOfFreedom.setPosition(degOfFreedom.getPosition()-rate);}
 
+    public void setDOFPosition(double position){
+        degOfFreedom.setPosition(position);
+    }
+
     public double getDOFPosition(){return degOfFreedom.getPosition();}
 
 }
