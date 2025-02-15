@@ -51,11 +51,12 @@ public class TeleOpParent extends LinearOpMode {
 //                lowering = !Professor.outlift.atTarget();
 //            }
 //            else {
-//                Professor.outlift.setPower(gamepad2.left_stick_y);
+//                Professor.outlift.set3.
+//                Power(gamepad2.left_stick_y);
 //            }
 
             if(gamepad2.a){
-                wallSpecimin();
+               grabSpecimin();
             }
             if(gamepad2.y){
                 hangSpecimin();
@@ -81,26 +82,22 @@ public class TeleOpParent extends LinearOpMode {
 //                targetR -= 0.05;
 //            }
 
-            if(gamepad2.left_trigger>0.1){
-                Professor.outlift.setPower(-gamepad2.left_trigger);
+            if(gamepad2.right_trigger>0.1){
+                Professor.outlift.setPower(-gamepad2.right_trigger);
             }
 
-            else if(gamepad2.right_trigger>0.1){
-                Professor.outlift.setPower(gamepad2.right_trigger);
-            }
-
-            else{
-                Professor.outlift.setPower(-0.05);
+            else if(gamepad2.left_trigger>0.1){
+                Professor.outlift.setPower(gamepad2.left_trigger);
             }
             if(gamepad2.left_bumper){
-                Professor.outclaw.close();
-            }
-            if(gamepad2.right_bumper){
                 Professor.outclaw.open();
             }
+            if(gamepad2.right_bumper){
+                Professor.outclaw.close();
+            }
 
 
-//            Professor.inclaw.setClawRot(gamepad2.left_stick_x, gamepad2.right_stick_x+0.1);
+            Professor.inclaw.setClawRot(gamepad2.left_stick_x, gamepad2.right_stick_x+0.1);
 //            Professor.inlift.setPosition(gamepad2.left_stick_y);
 
             double driveTurn = Math.pow(gamepad1.right_stick_x, 3); //change to minus if broken
@@ -121,12 +118,6 @@ public class TeleOpParent extends LinearOpMode {
         }
     }
     public void wallSpecimin(){
-        try{
-            Thread.sleep(800);
-        }
-        catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
         Professor.outclaw.setDofPos(0.4);
         Professor.outclaw.setArmPos(0);
 
@@ -134,11 +125,9 @@ public class TeleOpParent extends LinearOpMode {
     public void hangSpecimin(){
         Professor.outclaw.setDofPos(0.68);
         Professor.outclaw.setArmPos(0.3);
-        try{
-            Thread.sleep(800);
-        }
-        catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
+    }
+    public void grabSpecimin(){
+        Professor.outclaw.setDofPos(0.25);
+        Professor.outclaw.setArmPos(1);
     }
 }
