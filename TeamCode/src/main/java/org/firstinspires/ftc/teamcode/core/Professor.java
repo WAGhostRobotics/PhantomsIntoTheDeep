@@ -9,11 +9,6 @@ import org.firstinspires.ftc.teamcode.component.IntakeLift;
 import org.firstinspires.ftc.teamcode.component.OutputClaw;
 import org.firstinspires.ftc.teamcode.component.OutputLift;
 
-/**
-* This file represents your robot; here is where you'll put all of your components together to form
-* one object that can be programmed to perform various tasks in TeleOpMode.
-* */
-
 public class Professor {
 
     public static IntakeClaw inclaw;

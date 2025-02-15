@@ -25,9 +25,9 @@ public class OutputLift {
     }
 
     public void setPosition(double targetPos){
-        armController.setPID(0.00225, 0.001, 0);
+        armController.setPID(0.003, 0.00015, 0);
 
-        error = targetPos-(leftSlides.getCurrentPosition());
+        error = targetPos+leftSlides.getCurrentPosition();
 
         leftSlides.setPower( Range.clip(armController.calculate(0, error), -1, 1));
         rightSlides.setPower( Range.clip(armController.calculate(0, -error), -1, 1));

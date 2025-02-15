@@ -18,29 +18,41 @@ public class OutputClaw {
     }
 
     public void open(){
-        claw.setPosition(0.65);
+        claw.setPosition(1);
     }
 
     public void close(){
-        claw.setPosition(0.4);
+        claw.setPosition(0);
     }
 
     public void turnUp() {
             degOfFreedom.setPosition(degOfFreedom.getPosition() +0.5* rate);
     }
 
-    public void turnDown(){degOfFreedom.setPosition(degOfFreedom.getPosition()-0.5*rate);}
+    public void turnDown(){
+        degOfFreedom.setPosition(degOfFreedom.getPosition()-0.5*rate);
+    }
+
+    public void setDofPos(double pos){
+        degOfFreedom.setPosition(pos);
+    }
 
     public void armUp(){
-        dofArm.setPosition(dofArm.getPosition() - rate);
+        dofArm.setPosition(dofArm.getPosition() - 0.25*rate);
     }
 
     public void armDown(){
-        dofArm.setPosition(dofArm.getPosition() + rate);
+        dofArm.setPosition(dofArm.getPosition() + 0.25*rate);
     }
 
-    public void dofReady(){
-        degOfFreedom.setPosition(0.4);
+    public void setArmPos(double pos){
+        dofArm.setPosition(pos);
+    }
+
+    public double getClawPos(){return claw.getPosition();}
+
+    public double getArmPos(){
+        return dofArm.getPosition();
     }
 
     public double getDOFPosition(){return degOfFreedom.getPosition();}

@@ -10,12 +10,6 @@ public class IntakeLift {
 
     public void init(HardwareMap hardwareMap){
         slide = hardwareMap.get(Servo.class, "horiz");
-
-//        leftSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightSlides.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//        leftSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        rightSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
 //    public void setPower(double power){
