@@ -28,19 +28,46 @@ public class TestOp extends LinearOpMode {
         DcMotor rightSlides = hardwareMap.get(DcMotor.class, "rightVert");
         waitForStart();
         while (opModeIsActive()) {
-            armController.setPID(P, I, D);
+//            armController.setPID(P, I, D);
+//
+//            error = targetPos+leftSlides.getCurrentPosition();
+//
+//            leftSlides.setPower( Range.clip(armController.calculate(0, error), -1, 1));
+//            rightSlides.setPower( Range.clip(armController.calculate(0, -error), -1, 1));
+//
+//            telemetry.addData("power", Range.clip(armController.calculate(0, error), -1, 1));
+//            telemetry.addData("error", error);
+//
+//            telemetry.update();
+//            telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-            error = targetPos+leftSlides.getCurrentPosition();
+            while(Math.abs(Professor.outlift.error)>100){
+                Professor.outlift.setPosition(-1100);
+                telemetry.addData("E", Professor.outlift.error);
+                telemetry.addData("T", Professor.outlift.leftSlides.getCurrentPosition());
+                telemetry.update();
+            }
 
-            leftSlides.setPower( Range.clip(armController.calculate(0, error), -1, 1));
-            rightSlides.setPower( Range.clip(armController.calculate(0, -error), -1, 1));
+            Professor.backLeft.setPower(1);
+            Professor.backRight.setPower(1);
+            Professor.frontLeft.setPower(1);
+            Professor.frontRight.setPower(1);
 
-            telemetry.addData("power", Range.clip(armController.calculate(0, error), -1, 1));
-            telemetry.addData("error", error);
+            try{
+                Thread.sleep(2500);
+            }
+            catch(InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
 
+            Professor.backLeft.setPower(0);
+            Professor.backRight.setPower(0);
+            Professor.frontLeft.setPower(0);
+            Professor.frontRight.setPower(0);
+
+            telemetry.addData("E", Professor.outlift.error);
+            telemetry.addData("T", Professor.outlift.leftSlides.getCurrentPosition());
             telemetry.update();
-            telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
         }
     }
 }

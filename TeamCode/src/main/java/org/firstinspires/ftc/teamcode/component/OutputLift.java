@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.util.Range;
 
 public class OutputLift {
 
-    DcMotor leftSlides;
-    DcMotor rightSlides;
+    public DcMotor leftSlides;
+    private DcMotor rightSlides;
 
-    PIDController armController = new PIDController(0.00225, 0.001, 0);
-    double error = 0;
+    private PIDController armController = new PIDController(0.00225, 0.001, 0);
+    public double error;
 
     public void init(HardwareMap hardwareMap){
         leftSlides = hardwareMap.get(DcMotor.class, "leftVert");
@@ -22,19 +22,23 @@ public class OutputLift {
 
         leftSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightSlides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        error = 1000;
     }
 
     public void setPosition(double targetPos){
-        armController.setPID(0.003, 0.00015, 0);
+        armController.setPID(0.00225, 0.001, 0);
 
         error = targetPos+leftSlides.getCurrentPosition();
 
-        leftSlides.setPower( Range.clip(armController.calculate(0, error), -1, 1));
-        rightSlides.setPower( Range.clip(armController.calculate(0, -error), -1, 1));
+        System.out.println("EEEE");
+        leftSlides.setPower(Range.clip(armController.calculate(0, error), -1, 1));
+        rightSlides.setPower(Range.clip(armController.calculate(0, -error), -1, 1));
     }
 
     public void setPower(double power){
         leftSlides.setPower(power);
+        rightSlides.setPower(-power);
     }
 
     public double[] getPosition(){

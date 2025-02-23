@@ -12,20 +12,13 @@ public class IntakeLift {
         slide = hardwareMap.get(Servo.class, "horiz");
     }
 
-//    public void setPower(double power){
-//        if ((power < 0 && getPosition()[0] > 300)|| (power > 0 && getPosition()[0] < 7000)) {
-//            rightSlides.setPower(power);
-//            leftSlides.setPower(-power);
-//        }
-//        else {
-//            rightSlides.setPower(0);
-//            leftSlides.setPower(0);
-//        }
-//    }
-//
-//    public double[] getPosition(){
-//        return new double[]{leftSlides.getCurrentPosition(), rightSlides.getCurrentPosition()};
-//    }
+    public void moveOut(){
+        slide.setPosition(slide.getPosition()-0.001);
+    }
+
+    public void moveIn(){
+        slide.setPosition(slide.getPosition()+0.001);
+    }
 
     public void setPosition(double targetPos){
         slide.setPosition(targetPos);

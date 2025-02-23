@@ -24,25 +24,35 @@ public class AutoEww extends LinearOpMode {
 
         if(isStopRequested()) return;
 
+        Professor.outclaw.setDofPos(0.85);
+        Professor.outclaw.setArmPos(0.2);
+
+        while(Math.abs(Professor.outlift.error)>100){
+            Professor.outlift.setPosition(-1100);
+            telemetry.addData("E", Professor.outlift.error);
+            telemetry.addData("T", Professor.outlift.leftSlides.getCurrentPosition());
+            telemetry.update();
+        }
+
         Professor.backLeft.setPower(1);
-        Professor.backRight.setPower(-1);
-        Professor.frontLeft.setPower(-1);
+        Professor.backRight.setPower(1);
+        Professor.frontLeft.setPower(1);
         Professor.frontRight.setPower(1);
+
         try{
             Thread.sleep(2500);
         }
         catch(InterruptedException e){
             Thread.currentThread().interrupt();
         }
+
         Professor.backLeft.setPower(0);
         Professor.backRight.setPower(0);
         Professor.frontLeft.setPower(0);
         Professor.frontRight.setPower(0);
-        try{
-            Thread.sleep(27500);
-        }
-        catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
+
+        telemetry.addData("E", Professor.outlift.error);
+        telemetry.addData("T", Professor.outlift.leftSlides.getCurrentPosition());
+        telemetry.update();
     }
 }

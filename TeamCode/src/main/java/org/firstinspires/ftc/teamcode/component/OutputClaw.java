@@ -25,6 +25,10 @@ public class OutputClaw {
         claw.setPosition(0);
     }
 
+    public void switchClaw(){
+        claw.setPosition(1-claw.getPosition());
+    }
+
     public void turnUp() {
             degOfFreedom.setPosition(degOfFreedom.getPosition() +0.5* rate);
     }

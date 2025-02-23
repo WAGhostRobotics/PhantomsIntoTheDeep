@@ -14,11 +14,7 @@ public class TeleOpParent extends LinearOpMode {
     public double movementPwr = 1;
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
 
-    boolean lastClawChangeIn = false;
-    boolean inClawOpen = true;
-
-    double targetL;
-    double targetR;
+    boolean lastClawChange = false;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -28,7 +24,7 @@ public class TeleOpParent extends LinearOpMode {
         Professor.inclaw.open();
         Professor.outclaw.close();
         Professor.outclaw.setArmPos(1);
-        Professor.outlift.setPosition(0);
+//        Professor.outlift.setPosition(0);
 
         waitForStart();
 
@@ -46,59 +42,37 @@ public class TeleOpParent extends LinearOpMode {
                 movementPwr = 1;
             }
 
-//            if(gamepad2.dpad_up || lowering) {
-//                Professor.outlift.setPosition(0);
-//                lowering = !Professor.outlift.atTarget();
-//            }
-//            else {
-//                Professor.outlift.set3.
-//                Power(gamepad2.left_stick_y);
-//            }
-
             if(gamepad2.a){
                grabSpecimin();
             }
-            if(gamepad2.y){
+            if(gamepad2.y) {
                 hangSpecimin();
             }
-
-//            if(gamepad2.dpad_up){
-//                targetL -= 0.05;
-//                targetR += 0.05;
-//            }
-//
-//            if(gamepad2.dpad_down){
-//                targetL += 0.05;
-//                targetR -= 0.05;
-//            }
-//
-//            if(gamepad2.dpad_left){
-//                targetL += 0.05;
-//                targetR += 0.05;
-//            }
-//
-//            if(gamepad2.dpad_right){
-//                targetL -= 0.05;
-//                targetR -= 0.05;
-//            }
-
-            if(gamepad2.right_trigger>0.1){
-                Professor.outlift.setPower(-gamepad2.right_trigger);
+            if(gamepad2.x){
+                transferPos();
+            }
+            if(gamepad2.b){
+                intakePos();
             }
 
-            else if(gamepad2.left_trigger>0.1){
-                Professor.outlift.setPower(gamepad2.left_trigger);
+            Professor.outlift.setPower(gamepad2.left_trigger-gamepad2.right_trigger);
+
+            if(gamepad2.right_bumper && !lastClawChange){
+                Professor.outclaw.switchClaw();
+                Professor.inclaw.switchClaw();
+                lastClawChange = true;
             }
-            if(gamepad2.left_bumper){
-                Professor.outclaw.open();
-            }
-            if(gamepad2.right_bumper){
-                Professor.outclaw.close();
+            else if (!gamepad2.right_bumper){
+                lastClawChange = false;
             }
 
+            if(gamepad2.dpad_left){
+                Professor.inlift.moveIn();
+            }
 
-            Professor.inclaw.setClawRot(gamepad2.left_stick_x, gamepad2.right_stick_x+0.1);
-//            Professor.inlift.setPosition(gamepad2.left_stick_y);
+            if(gamepad2.dpad_right){
+                Professor.inlift.moveOut();
+            }
 
             double driveTurn = Math.pow(gamepad1.right_stick_x, 3); //change to minus if broken
             double driveY = Math.pow(gamepad1.left_stick_x, 3);
@@ -106,28 +80,49 @@ public class TeleOpParent extends LinearOpMode {
             drive.drive(Math.hypot(driveX, driveY), Math.toDegrees(Math.atan2(driveY, driveX)), driveTurn, movementPwr);
             //Use driverOrientedControl.drive passing gamepad1 and movementPwr as args
 
-            telemetry.addData("InLift", Professor.inlift.getPosition());
             telemetry.addData("InClaw", Professor.inclaw.getClawPos());
-//            telemetry.addData("InDOF", Professor.inclaw.getDOFPosition());
-            telemetry.addData("OutClaw", Professor.outclaw.getClawPos());
             telemetry.addData("OutDOF", Professor.outclaw.getDOFPosition());
             telemetry.addData("OutArm", Professor.outclaw.getArmPos());
-            telemetry.addData("x", gamepad2.x);
 
             telemetry.update();
         }
     }
-    public void wallSpecimin(){
-        Professor.outclaw.setDofPos(0.4);
-        Professor.outclaw.setArmPos(0);
-
+    public void transferPos(){
+        Professor.outclaw.setArmPos(0.22);
+        try{
+            Thread.sleep(200);
+        }
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+        Professor.inclaw.setClawRot(0.75, 0.25);
+        Professor.inlift.setPosition(0.48);
+        Professor.outclaw.setDofPos(0.16);
+        Professor.outclaw.setArmPos(1);
+    }
+    public void intakePos(){
+        Professor.inclaw.switchClaw();
+        try{
+            Thread.sleep(200);
+        }
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+        Professor.inclaw.setClawRot(0.25, 0.75);
+        try{
+            Thread.sleep(100);
+        }
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+        Professor.inclaw.switchClaw();
     }
     public void hangSpecimin(){
-        Professor.outclaw.setDofPos(0.68);
-        Professor.outclaw.setArmPos(0.3);
+        Professor.outclaw.setDofPos(0.85);
+        Professor.outclaw.setArmPos(0.2);
     }
     public void grabSpecimin(){
-        Professor.outclaw.setDofPos(0.25);
-        Professor.outclaw.setArmPos(1);
+        Professor.outclaw.setDofPos(0.50);
+        Professor.outclaw.setArmPos(0.99);
     }
 }

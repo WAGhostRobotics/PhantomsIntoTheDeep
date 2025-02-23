@@ -25,6 +25,10 @@ public class IntakeClaw {
         claw.setPosition(0);
     }
 
+    public void switchClaw(){
+        claw.setPosition(1-claw.getPosition());
+    }
+
     public double getClawPos(){
         return claw.getPosition();
     }
@@ -33,19 +37,5 @@ public class IntakeClaw {
         diffy1.setPosition(pos1);
         diffy2.setPosition(pos2);
     }
-
-//    public void spinLeft() {
-//        if (degOfFreedom.getPosition() < 0.85) {
-//            degOfFreedom.setPosition(degOfFreedom.getPosition() + rate);
-//        }
-//    }
-
-//    public void spinRight(){degOfFreedom.setPosition(degOfFreedom.getPosition()-rate);}
-//
-//    public void setDOFPosition(double position){
-//        degOfFreedom.setPosition(position);
-//    }
-//
-//    public double getDOFPosition(){return degOfFreedom.getPosition();}
 
 }
