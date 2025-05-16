@@ -41,8 +41,8 @@ public class OutputLift {
         rightSlides.setPower(-power);
     }
 
-    public double[] getPosition(){
-        return new double[]{leftSlides.getCurrentPosition(), rightSlides.getCurrentPosition()};
+    public double getPosition(){
+        return leftSlides.getCurrentPosition();
     }
 
     public boolean atTarget(){

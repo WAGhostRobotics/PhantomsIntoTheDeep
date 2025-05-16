@@ -19,13 +19,13 @@ public class AutoEww extends LinearOpMode {
 
         MecanumDrive drive = new MecanumDrive(hardwareMap);
 
+        Professor.outclaw.setArmPos(0.9);
+
 //        DriverOrientedControl drive = new DriverOrientedControl()
         //pass args and motors
 
         if(isStopRequested()) return;
 
-        Professor.outclaw.setDofPos(0.85);
-        Professor.outclaw.setArmPos(0.2);
 
         while(Math.abs(Professor.outlift.error)>100){
             Professor.outlift.setPosition(-1100);
@@ -34,10 +34,23 @@ public class AutoEww extends LinearOpMode {
             telemetry.update();
         }
 
-        Professor.backLeft.setPower(1);
-        Professor.backRight.setPower(1);
-        Professor.frontLeft.setPower(1);
-        Professor.frontRight.setPower(1);
+        Professor.outclaw.setArmPos(0.8);
+        Professor.outclaw.close();
+        Professor.outclaw.setArmPos(0.2);
+        Professor.outclaw.setDofPos(0.85);
+
+        try{
+            Thread.sleep(5000);
+        }
+        catch(InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+
+
+        Professor.backLeft.setPower(0.8);
+        Professor.backRight.setPower(0.8);
+        Professor.frontLeft.setPower(0.8);
+        Professor.frontRight.setPower(0.8);
 
         try{
             Thread.sleep(2500);
@@ -50,6 +63,8 @@ public class AutoEww extends LinearOpMode {
         Professor.backRight.setPower(0);
         Professor.frontLeft.setPower(0);
         Professor.frontRight.setPower(0);
+
+        Professor.outclaw.open();
 
         telemetry.addData("E", Professor.outlift.error);
         telemetry.addData("T", Professor.outlift.leftSlides.getCurrentPosition());

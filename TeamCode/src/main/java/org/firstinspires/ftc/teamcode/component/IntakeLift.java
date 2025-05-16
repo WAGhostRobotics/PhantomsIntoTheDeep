@@ -13,11 +13,11 @@ public class IntakeLift {
     }
 
     public void moveOut(){
-        slide.setPosition(slide.getPosition()-0.001);
+        slide.setPosition(slide.getPosition()-0.0025);
     }
 
     public void moveIn(){
-        slide.setPosition(slide.getPosition()+0.001);
+        slide.setPosition(slide.getPosition()+0.0025);
     }
 
     public void setPosition(double targetPos){

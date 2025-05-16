@@ -15,6 +15,7 @@ public class TeleOpParent extends LinearOpMode {
     DriveStyle.DriveType type = DriveStyle.DriveType.MECANUMARCADE;
 
     boolean lastClawChange = false;
+    boolean endgame = false;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -35,43 +36,59 @@ public class TeleOpParent extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if(gamepad1.left_trigger>0.1){
+            if (gamepad1.left_trigger > 0.1) {
                 movementPwr = 0.25;
-            }
-            else{
+            } else {
                 movementPwr = 1;
             }
 
-            if(gamepad2.a){
-               grabSpecimin();
+            if (gamepad2.a) {
+                grabSpecimin();
             }
-            if(gamepad2.y) {
+            if (gamepad2.y) {
                 hangSpecimin();
             }
-            if(gamepad2.x){
+            if (gamepad2.x) {
                 transferPos();
             }
-            if(gamepad2.b){
+            if (gamepad2.b) {
                 intakePos();
             }
 
-            Professor.outlift.setPower(gamepad2.left_trigger-gamepad2.right_trigger);
+            if (Professor.outlift.getPosition() < 2000) {
+                Professor.outlift.setPower(gamepad2.left_trigger - gamepad2.right_trigger - 0.00005 * Professor.outlift.getPosition());
+            }
+            else {
+                Professor.outlift.setPower(gamepad2.left_trigger - 0.1);
+            }
 
-            if(gamepad2.right_bumper && !lastClawChange){
+            if (gamepad2.right_bumper && !lastClawChange) {
                 Professor.outclaw.switchClaw();
                 Professor.inclaw.switchClaw();
                 lastClawChange = true;
-            }
-            else if (!gamepad2.right_bumper){
+            } else if (!gamepad2.right_bumper) {
                 lastClawChange = false;
             }
 
-            if(gamepad2.dpad_left){
+            if (gamepad2.left_bumper){
+                endgame = true;
+            }
+
+            if (gamepad2.dpad_up) {
                 Professor.inlift.moveIn();
             }
 
-            if(gamepad2.dpad_right){
+            if (gamepad2.dpad_down) {
                 Professor.inlift.moveOut();
+            }
+
+            if (endgame) {
+                if (gamepad2.dpad_left) {
+                    Professor.inclaw.setClawRot(0.1, 0.9);
+                }
+                if (gamepad2.dpad_right) {
+                    hang();
+                }
             }
 
             double driveTurn = Math.pow(gamepad1.right_stick_x, 3); //change to minus if broken
@@ -83,6 +100,7 @@ public class TeleOpParent extends LinearOpMode {
             telemetry.addData("InClaw", Professor.inclaw.getClawPos());
             telemetry.addData("OutDOF", Professor.outclaw.getDOFPosition());
             telemetry.addData("OutArm", Professor.outclaw.getArmPos());
+            telemetry.addData("Slides", Professor.outlift.getPosition());
 
             telemetry.update();
         }
@@ -124,5 +142,12 @@ public class TeleOpParent extends LinearOpMode {
     public void grabSpecimin(){
         Professor.outclaw.setDofPos(0.50);
         Professor.outclaw.setArmPos(0.99);
+    }
+
+    public void hang(){
+        while(true) {
+            Professor.outlift.setPower(1);
+            Professor.inlift.setPosition(0);
+        }
     }
 }
